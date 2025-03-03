@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+
+@import "slick-carousel/slick/slick.css"; 
+@import "slick-carousel/slick/slick-theme.css";
+
+
+@theme{
+    --color-primaryColor:#D19c97;
+    --color-secondaryColor:#EDF1FF;
+    --color-tertiaryColor: #6f6f6f
+    
+}
