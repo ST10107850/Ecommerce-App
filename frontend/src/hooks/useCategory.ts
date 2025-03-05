@@ -43,7 +43,7 @@ export const useCategory = () => {
       }
   
       const options = {
-        maxSizeMB: 1, // Compress to below 1MB
+        maxSizeMB: 1,
         maxWidthOrHeight: 1024,
         useWebWorker: true
       };

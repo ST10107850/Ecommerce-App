@@ -1,8 +1,20 @@
+import { useState } from "react";
 import { Card } from "../reusableComponets/Card";
 import { Link } from "react-router-dom";
 import { ProductTypes } from "../types/State";
 
 export const Product = ({ isHome = true, products = [] }) => {
+  const itemsPerPage = 6;
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+
+  const displayedProducts = isHome
+    ? products.slice(0, itemsPerPage)
+    : products.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   return (
     <div className={` ${isHome ? "md:px-32 px-8" : "px-0"} mt-32 w-full`}>
       <div className={`${isHome ? "mb-10 block" : "hidden"} `}>
@@ -12,11 +24,11 @@ export const Product = ({ isHome = true, products = [] }) => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8 w-full">
-        {products?.length > 0 ? (
-          products.map((item: ProductTypes) => (
+        {displayedProducts.length > 0 ? (
+          displayedProducts.map((item: ProductTypes) => (
             <div key={item._id} className="block">
               <Card
-                image={item.ImageUri?.[0] || "/default-image.jpg"} // Prevent errors if ImageUri is empty
+                image={item.ImageUri?.[0]}
                 itemName={item.productName}
                 price={item.price}
                 id={item._id}
@@ -30,14 +42,35 @@ export const Product = ({ isHome = true, products = [] }) => {
         )}
       </div>
 
-      {isHome && (
+      {isHome ? (
         <div className="mt-10 flex justify-center">
           <Link
             to="/products"
-            className="bg-[#1563DF] text-white py-3 px-6 rounded-md hover:bg-blue-700"
+            className="bg-primaryColor text-white py-3 px-6 hover:bg-amber-600"
           >
             View All Products
           </Link>
+        </div>
+      ) : (
+        // Pagination Controls
+        <div className="mt-10 flex justify-center space-x-3">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            className={`py-2 px-4 border ${currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-primaryColor text-white hover:bg-amber-600"}`}
+          >
+            Prev
+          </button>
+          <span className="py-2 px-4 border bg-gray-200">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            className={`py-2 px-4 border ${currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-primaryColor text-white hover:bg-amber-600"}`}
+          >
+            Next
+          </button>
         </div>
       )}
     </div>

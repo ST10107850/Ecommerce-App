@@ -24,6 +24,7 @@ export const Category = () => {
               key={item._id}
               image={item.ImageUri}
               categoryName={item.categoryName}
+              
             />
           ))
         ) : (

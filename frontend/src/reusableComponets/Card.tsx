@@ -56,7 +56,7 @@ export const Card = ({
 
       <div className="mt-4 px-2 flex flex-col justify-center">
         <div className="text-center">
-          <h3 className="text-lg font-bold text-gray-900">{itemName}</h3>
+          <h3 className="text-lg font-bold text-gray-900">{itemName.length > 20 ? itemName.slice(0, 20) + "..." : itemName}</h3>
           <div className="flex justify-center items-center space-x-2 mt-2">
             <p className="text-red-500 font-bold text-lg">{`R${price}`}</p>
             {discount && (

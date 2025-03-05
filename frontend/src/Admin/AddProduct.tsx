@@ -2,7 +2,7 @@ import { useCategory } from "../hooks/useCategory";
 import { useProduct } from "../hooks/useProduct";
 
 const sizes = ["S", "M", "L", "XL"];
-const colors = ["Red", "Blue", "Green", "Black"];
+const colors = ["Red", "Blue", "Green", "Black", "White", "Pink", "Purple"];
 
 export const AddProduct = () => {
   const {
@@ -176,7 +176,7 @@ export const AddProduct = () => {
               </div>
             </div>
           </div>
-          <div className="flex w-full space-x-6">
+          
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">
                 Description
@@ -184,11 +184,12 @@ export const AddProduct = () => {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full h-[20vh]"
                 placeholder="Enter Product Description"
               />
             </div>
-            <div className="w-full">
+            <div className="flex w-full space-x-6">
+            <div className="w-1/2">
               <label className="block text-sm font-medium text-gray-700">
                 Price
               </label>

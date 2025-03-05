@@ -185,7 +185,7 @@ export const ProductDetails = () => {
               <div className="flex gap-4">
                 <button
                   onClick={handleAddToCart}
-                  className="bg-primaryColor text-black px-6 py-2 flex space-x-3 items-center text-xl hover:bg-blue-700 transition"
+                  className="bg-primaryColor text-black px-6 py-2 flex space-x-3 items-center text-xl hover:bg-amber-700 transition"
                 >
                   <FaCartPlus />
                   <p>Add to Cart</p>

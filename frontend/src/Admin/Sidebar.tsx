@@ -12,7 +12,7 @@ export const Sidebar = ({ title = "ExcLusive" }) => {
   const isActive = (path: any) => location.pathname === path ? 'bg-blue-500' : '';
 
   return (
-    <div className="bg-[#161E2D] text-white h-screen w-64 flex flex-col">
+    <div className="bg-[#161E2D] text-white h-screen max-w-64 flex flex-col">
       <div className="p-6 mb-16 text-4xl font-bold border-b">{title}</div>
       <nav className="flex text-lg font-medium flex-col mt-10">
         <Link

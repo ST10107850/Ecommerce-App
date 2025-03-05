@@ -37,6 +37,7 @@ export const createProduct = expressAsyncHandler(async (req, res) => {
     throw new Error("Product already exists");
   }
 
+
   const newProduct = await Product.create({
     userId: req.user._id,
     categoryId: new mongoose.Types.ObjectId(categoryId),
@@ -60,9 +61,9 @@ export const getAllProduct = expressAsyncHandler(async (req, res) => {
     const products = await Product.find()
       .populate({
         path: "categoryId",
-        select: "categoryName", // Only select the categoryName field from Category
+        select: "categoryName",
       })
-      .populate({ path: "userId", select: "firstName lastName" });
+      .populate({ path: "userId", select: "firstName lastName" }).sort({ createdAt: -1 });
     res.status(200).json({ success: true, data: products });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -92,7 +93,8 @@ export const getProductByCategory = expressAsyncHandler(async (req, res) => {
 export const updateProduct = expressAsyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const { productName, ImageUri, price, description, size, colours, discount } = req.body;
+  const { productName, ImageUri, price, description, size, colours, discount } =
+    req.body;
 
   const product = await Product.findById(id);
 
@@ -107,7 +109,7 @@ export const updateProduct = expressAsyncHandler(async (req, res) => {
   product.price = price || product.price;
   product.size = size || product.size;
   product.colours = colours || product.colours;
-  product.discount = discount || product.discount
+  product.discount = discount || product.discount;
 
   const updatedProduct = await product.save();
 
@@ -149,7 +151,10 @@ export const getProductDetails = expressAsyncHandler(async (req, res) => {
     throw new Error("Product ID is required.");
   }
 
-  const product = await Product.findById(id);
+  const product = await Product.findById(id).populate({
+    path: "ImageUri",
+    select: "filename path mimetype",
+  });
 
   if (!product) {
     res.status(404);

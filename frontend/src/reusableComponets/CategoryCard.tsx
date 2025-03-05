@@ -1,8 +1,8 @@
-export const CategoryCard = ({ categoryName, image }) => {
+export const CategoryCard = ({ categoryName, image, numberOfProduct }) => {
   return (
     <div className="bg-white  border-gray-300 border p-4 max-w-[500px] relative">
-      <p className="text-end text-tertiaryColor">12 Products</p>
-      <div className="flex h-[400px] w-full justify-center mt-5">
+      <p className="text-end text-tertiaryColor">{numberOfProduct} Products</p>
+      <div className="flex max-h-[250px] w-full justify-center mt-5">
         <img
           src={image}
           alt="Product"

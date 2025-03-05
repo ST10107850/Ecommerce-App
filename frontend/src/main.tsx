@@ -32,38 +32,46 @@ import Invoice from "./components/Invoice.tsx";
 import UsersProduct from "./Admin/UsersProduct.tsx";
 import { GetUserOrders } from "./components/GetUserOrders.tsx";
 import { EditProduct } from "./Admin/EditProduct.tsx";
+import { UserLayout } from "./Layouts/UserLayout.tsx";
+import { AdminLayout } from "./Layouts/AdminLayout.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/" index={true} element={<HomePage />} />
-      <Route path="/products" element={<ProductPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/sign-up" element={<SignUp />} />
-      <Route path="/product/:_id" element={<ProductDetailPage />} />
-      <Route element={<PrivateRouter />}>
-        <Route path="/wishlist" element={<WhishList />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<CheckOut />} />
-        <Route path="/profile" element={<Profile />} />
+      <Route element={<UserLayout />}>
+        <Route path="/" index={true} element={<HomePage />} />
+        <Route path="/products" element={<ProductPage />} />
+        <Route path="/products" element={<ProductPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/product/:_id" element={<ProductDetailPage />} />
 
-        {/*  */}
-        <Route path="/admin" element={<AdminDashboard />}>
-          <Route index element={<Dashboard />} />
-          <Route path="/admin/orders" element={<Orders />} />
-          <Route path="/admin/product" element={<AdminProduct />} />
-          <Route path="/admin/cumstores" element={<Customers />} />
-          <Route path="/admin/product/:_id" element={<ProductDetails />} />
-          <Route path="/admin/product/create" element={<AddProduct />} />
-          <Route path="/admin/categories" element={<AdminCategories />} />
-          <Route path="/admin/order/:id" element={<UsersProduct />} />
-          <Route path="/admin/products/:_id" element={<EditProduct />} />
+        <Route element={<PrivateRouter />}>
+          <Route path="wishlist" element={<WhishList />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<CheckOut />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="orders" element={<GetUserOrders />} />
+          <Route path="order/:id" element={<UsersProduct />} />
         </Route>
+      </Route>
 
-        <Route path="/admin/invoice" element={<Invoice />} />
-        <Route path="/orders" element={<GetUserOrders />} />
-        <Route path="/order/:id" element={<UsersProduct />} />
-       
+      <Route element={<PrivateRouter />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<AdminDashboard />}>
+            <Route index element={<Dashboard />} />
+            <Route path="/admin/orders" element={<Orders />} />
+            <Route path="/admin/product" element={<AdminProduct />} />
+            <Route path="/admin/cumstores" element={<Customers />} />
+            <Route path="/admin/product/:_id" element={<ProductDetails />} />
+            <Route path="/admin/product/create" element={<AddProduct />} />
+            <Route path="/admin/categories" element={<AdminCategories />} />
+            <Route path="/admin/order/:id" element={<UsersProduct />} />
+            <Route path="/admin/products/:_id" element={<EditProduct />} />
+          </Route>
+          <Route path="/orders" element={<GetUserOrders />} />
+          <Route path="/order/:id" element={<UsersProduct />} />
+        </Route>
       </Route>
     </Route>
   )

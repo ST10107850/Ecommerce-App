@@ -45,41 +45,42 @@ export const EditProduct = () => {
   }, [category]);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files; 
-
+    const files = e.target.files;
+    
     if (files) {
       const newImageUris: string[] = []; 
-
+  
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
-        if (file.size >  0.5 * 1024 * 1024) {
-          alert("File size should not exceed 500KB.");
-          continue; 
+  
+        if (file.size > 2 * 1024 * 1024) {
+          alert("File size should not exceed 2MB.");
+          continue;
         }
-
-        const options = {
-          maxSizeMB: 0.5,
-          maxWidthOrHeight: 1024,
-          useWebWorker: true,
-        };
-
+  
         try {
-          const compressedFile = await imageCompression(file, options);
-          const reader = new FileReader();
-          reader.readAsDataURL(compressedFile);
-
-          reader.onload = () => {
-            if (typeof reader.result === "string") {
-              newImageUris.push(reader.result);
-            }
-          };
+          const base64 = await convertToBase64(file);
+          newImageUris.push(base64);
         } catch (error) {
-          console.error("Error compressing image", error);
+          console.error("Error converting image to Base64", error);
         }
       }
-
+  
+      // Append new images to the existing ones
       setImageUri((prev) => [...prev, ...newImageUris]);
+      console.log("Updated Image URIs:", [...ImageUri, ...newImageUris]);
     }
+  };
+  
+
+  // Function to Convert File to Base64
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
   const handleDeleteImage = (index: number) => {
@@ -254,18 +255,18 @@ export const EditProduct = () => {
             </div>
           </div>
 
+          <div className="w-full">
+            <label className="block text-sm font-medium text-gray-700">
+              Description
+            </label>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full h-[20vh]"
+              placeholder="Enter Product Description"
+            ></textarea>
+          </div>
           <div className="flex w-full space-x-6">
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                placeholder="Enter Product Description"
-              ></textarea>
-            </div>
             <div className="w-full">
               <label className="block text-sm font-medium text-gray-700">
                 Price
@@ -296,7 +297,7 @@ export const EditProduct = () => {
 
       <button
         onClick={handleSubmit}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 mt-8"
+        className="bg-primaryColor text-black py-2 px-4 rounded-md hover:bg-amber-900 mt-8"
         disabled={loading}
       >
         {loading ? "Updating..." : "Edit Product"}

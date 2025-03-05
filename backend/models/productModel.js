@@ -21,7 +21,21 @@ const productSchema = mongoose.Schema(
       {
         type: String,
         required: true,
-      },
+      }
+    
+      // {
+      //   name: {
+      //     type: String,
+      //     required: true,
+      //   },
+      //   mimetype: {
+      //     type: String,
+      //     required: true,
+      //   },
+      //   path: {
+      //     type: String,
+      //   },
+      // },
     ],
     description: {
       type: String,

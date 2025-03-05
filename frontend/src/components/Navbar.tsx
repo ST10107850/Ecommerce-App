@@ -15,7 +15,6 @@ import { RootState } from "../types/State";
 import useLogout from "../hooks/useLogout";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
 import { useFetchCart } from "../hooks/useFetchCart";
-import Barner from "./Barner";
 
 const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);

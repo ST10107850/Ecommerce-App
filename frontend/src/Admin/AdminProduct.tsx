@@ -21,27 +21,27 @@ export const AdminProduct = () => {
   };
 
   const filteredProducts = products
-  .filter((product) => {
-    const matchesSearch =
-      product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (product.categoryId?.categoryName &&
-        product.categoryId.categoryName
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()));
+    .filter((product) => {
+      const matchesSearch =
+        product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (product.categoryId?.categoryName &&
+          product.categoryId.categoryName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()));
 
-    const matchesCategory =
-      selectedCategory === "All" ||
-      product.categoryId?.categoryName === selectedCategory;
+      const matchesCategory =
+        selectedCategory === "All" ||
+        product.categoryId?.categoryName === selectedCategory;
 
-    return matchesSearch && matchesCategory;
-  })
-  .sort((a, b) => a.stock - b.stock);
-
-
+      return matchesSearch && matchesCategory;
+    })
+    .sort((a, b) => a.stock - b.stock);
 
   return (
     <div className="py-10 px-6 sm:px-10 md:px-16 shadow-md bg-white">
-      <h1 className="text-3xl uppercase text-primaryColor font-bold mb-8">Product Management</h1>
+      <h1 className="text-3xl uppercase text-primaryColor font-bold mb-8">
+        Product Management
+      </h1>
 
       <div className="flex justify-between mb-6">
         <div className="flex space-x-4 w-full max-w-xl">
@@ -125,8 +125,15 @@ export const AdminProduct = () => {
                   </div>
                 </td>
 
-                <td className="py-3 px-4">{product.productName}</td>
-                <td className="py-3 px-4">{product.categoryId?.categoryName}</td>
+                <td className="py-3 px-4">
+                  {product.productName.length > 20
+                    ? product.productName.slice(0, 20) + "..."
+                    : product.productName}
+                </td>
+
+                <td className="py-3 px-4">
+                  {product.categoryId?.categoryName}
+                </td>
                 <td className="py-3 px-4">R{product.price.toFixed(2)}</td>
                 <td className="py-3 px-4">
                   {product.createdAt

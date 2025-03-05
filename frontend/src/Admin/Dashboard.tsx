@@ -19,7 +19,7 @@ export const Dashboard = () => {
   return (
     <div className="flex flex-col justify-between space-x-1">
       <div>
-        <div className="flex flex-col justify-center max-w-2xl mx-auto my-7 space-y-4">
+        <div className="flex flex-col justify-center w-full mx-auto my-7 space-y-4">
           <h1 className="text-2xl font-semibold text-blue-400 text-center">
             Welcome to your Admin Dashboard!
           </h1>

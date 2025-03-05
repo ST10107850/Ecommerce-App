@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { ProductTypes } from "../types/State";
 import { useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression";
@@ -35,10 +35,9 @@ export const useProduct = () => {
       }
     };
     fetchProduct();
-    // }, 1000);
-
-    // return () => clearInterval(interval);
   }, []);
+
+  //Count product for each category
 
   //Delete Product
   const deleteProduct = async (productId: string, onSuccess: () => void) => {
@@ -74,63 +73,40 @@ export const useProduct = () => {
   //Create New Product
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files; // Get all selected files
-    
+    const files = e.target.files;
+
     if (files) {
-        const newImageUris: string[] = []; // Temporary array to hold image URLs
+      const newImageUris: string[] = []; 
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            if (file.size > 2 * 1024 * 1024) {
-                alert("File size should not exceed 2MB.");
-                continue; // Skip this file if it exceeds the size limit
-            }
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
 
-            const options = {
-                maxSizeMB: 1, 
-                maxWidthOrHeight: 1024,
-                useWebWorker: true,
-            };
-
-            try {
-                const compressedFile = await imageCompression(file, options);
-                const reader = new FileReader();
-                reader.readAsDataURL(compressedFile);
-
-                reader.onload = () => {
-                    if (typeof reader.result === "string") {
-                        newImageUris.push(reader.result);
-                    }
-                };
-            } catch (error) {
-                console.error("Error compressing image", error);
-            }
+        if (file.size > 2 * 1024 * 1024) {
+          alert("File size should not exceed 2MB.");
+          continue;
         }
 
-        
-        setImageUri((prev) => [...prev, ...newImageUris]);
+        try {
+          const base64 = await convertToBase64(file);
+          newImageUris.push(base64);
+        } catch (error) {
+          console.error("Error converting image to Base64", error);
+        }
+      }
+
+      setImageUri(newImageUris);
+      console.log("Base64 Image URIs:", newImageUris);
     }
-};
-
-
-  const handleDeleteImage = (index: number) => {
-    setImageUri((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedSizes = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setSize(selectedSizes);
-  };
-
-  const handleColourChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedColours = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setColours(selectedColours);
+  // Function to Convert File to Base64
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -139,12 +115,14 @@ export const useProduct = () => {
     const payload = {
       categoryId,
       productName,
-      ImageUri,
+      ImageUri, 
       size,
       colours,
       description,
       price,
     };
+
+    console.log("Payload before submission:", payload); 
 
     try {
       const res = await fetch("/api/product/create", {
@@ -164,6 +142,26 @@ export const useProduct = () => {
       console.error("Error:", err.message);
       alert(err.message);
     }
+  };
+
+  const handleDeleteImage = (index: number) => {
+    setImageUri((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedSizes = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setSize(selectedSizes);
+  };
+
+  const handleColourChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedColours = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setColours(selectedColours);
   };
 
   return {

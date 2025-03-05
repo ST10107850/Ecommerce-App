@@ -18,11 +18,9 @@ export const useFetchCart = () => {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    
       fetchCart();
-    }, 1000);
 
-    return () => clearInterval(interval);
   }, []);
 
   //Update Cart

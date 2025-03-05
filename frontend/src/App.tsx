@@ -38,14 +38,8 @@ function App() {
 
   return (
     <div className="w-full">
-      {userInfo?.role !== "admin" && (
-        <>
-          <TopHeader />
-          <Navbar />
-        </>
-      )}
+      
       <Outlet />
-      {userInfo?.role !== "admin" && <Footer />}
     </div>
   );
 }
